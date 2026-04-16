@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révision Examen — Exercices Python</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0f0f13;
+    --panel: #16161d;
+    --card: #1c1c26;
+    --border: #2a2a3a;
+    --accent: #7c6af7;
+    --accent2: #e8547a;
+    --accent3: #4ecdc4;
+    --accent4: #f7c948;
+    --text: #e2e2f0;
+    --muted: #8888aa;
+    --code-bg: #111118;
+    --kw: #c792ea;
+    --fn: #82aaff;
+    --str: #c3e88d;
+    --num: #f78c6c;
+    --comment: #546e7a;
+    --class-c: #ffcb6b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  nav {
+    width: 260px;
+    min-width: 260px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 28px 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 10;
+  }
+
+  .nav-brand {
+    padding: 0 22px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .nav-brand h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+  }
+  .nav-brand p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 22px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    transition: all 0.18s;
+    border-left: 3px solid transparent;
+  }
+  nav a:hover { color: var(--text); background: rgba(124,106,247,0.07); }
+  nav a.active { color: var(--accent); border-left-color: var(--accent); background: rgba(124,106,247,0.1); font-weight: 500; }
+
+  .nav-num {
+    width: 22px; height: 22px;
+    background: var(--border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  nav a.active .nav-num { background: var(--accent); color: #fff; }
+
+  /* ── MAIN ── */
+  main {
+    margin-left: 260px;
+    flex: 1;
+    padding: 48px 52px;
+    max-width: 960px;
+  }
+
+  .page-header {
+    margin-bottom: 56px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+  .page-header p { color: var(--muted); font-size: 15px; }
+
+  .badge-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  .badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid;
+  }
+  .badge-purple { color: var(--accent); border-color: var(--accent); background: rgba(124,106,247,0.1); }
+  .badge-pink   { color: var(--accent2); border-color: var(--accent2); background: rgba(232,84,122,0.1); }
+  .badge-teal   { color: var(--accent3); border-color: var(--accent3); background: rgba(78,205,196,0.1); }
+  .badge-yellow { color: var(--accent4); border-color: var(--accent4); background: rgba(247,201,72,0.1); }
+
+  /* ── EXERCISE CARD ── */
+  .exercise {
+    margin-bottom: 64px;
+    scroll-margin-top: 32px;
+  }
+
+  .ex-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+  .ex-num {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--accent), #9b6af7);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .ex-title { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .ex-subtitle { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* sections */
+  .section {
+    margin-bottom: 28px;
+  }
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* enonce block */
+  .enonce {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 30px;
+    line-height: 1.8;
+  }
+  .enonce p { margin-bottom: 14px; color: var(--text); }
+  .enonce p:last-child { margin-bottom: 0; }
+  .enonce strong { color: #fff; font-weight: 600; }
+  .enonce em { color: var(--accent4); font-style: normal; font-weight: 500; }
+  .enonce ul, .enonce ol { padding-left: 22px; margin-bottom: 14px; }
+  .enonce li { margin-bottom: 6px; }
+  .enonce li ul { margin-top: 6px; margin-bottom: 4px; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: rgba(124,106,247,0.12);
+    color: var(--accent3);
+    padding: 2px 6px;
+    border-radius: 5px;
+  }
+
+  /* code blocks */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .code-header {
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .code-header .dot { width:10px;height:10px;border-radius:50%; }
+  .dot-r{background:#ff5f57;} .dot-y{background:#ffbd2e;} .dot-g{background:#28c840;}
+  pre {
+    padding: 20px 22px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: #abb2bf;
+  }
+
+  /* syntax colors */
+  .kw  { color: var(--kw);  font-weight: 600; }
+  .fn  { color: var(--fn); }
+  .cl  { color: var(--class-c); }
+  .st  { color: var(--str); }
+  .nm  { color: var(--num); }
+  .cm  { color: var(--comment); font-style: italic; }
+  .op  { color: #89ddff; }
+  .bi  { color: #ffcb6b; }
+
+  /* output / example */
+  .output-block {
+    background: rgba(78,205,196,0.05);
+    border: 1px solid rgba(78,205,196,0.2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent3);
+    margin: 12px 0;
+    white-space: pre;
+  }
+
+  /* solution block */
+  .solution-box {
+    background: rgba(124,106,247,0.04);
+    border: 1px solid rgba(124,106,247,0.2);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .solution-box .code-block {
+    border: none;
+    border-radius: 0;
+    margin: 0;
+  }
+
+  /* notes / indices */
+  .note {
+    background: rgba(247,201,72,0.07);
+    border-left: 3px solid var(--accent4);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 14px;
+    color: #ddd;
+  }
+  .note strong { color: var(--accent4); }
+
+  .tip {
+    background: rgba(78,205,196,0.07);
+    border-left: 3px solid var(--accent3);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+  .tip strong { color: var(--accent3); }
+
+  .warn {
+    background: rgba(232,84,122,0.07);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+  .warn strong { color: var(--accent2); }
+
+  /* divider */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 56px 0; }
+
+  /* math */
+  .math {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--accent4);
+    display: inline-block;
+  }
+
+  /* grid diagram */
+  .ascii-demo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #e8547a;
+    line-height: 1.5;
+    padding: 14px;
+    background: var(--code-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: inline-block;
+    margin: 8px 0;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 900px) {
+    nav { width: 220px; min-width: 220px; }
+    main { margin-left: 220px; padding: 32px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<nav>
+  <div class="nav-brand">
+    <h1>Révision Examen<br>Python</h1>
+    <p>10 exercices • Toutes solutions</p>
+  </div>
+  <a href="#ex1" class="active"><span class="nav-num">01</span> Somme pondérée récursive</a>
+  <a href="#ex2"><span class="nav-num">02</span> Classe composée (AetB)</a>
+  <a href="#ex3"><span class="nav-num">03</span> Décorateur d'authentification</a>
+  <a href="#ex4"><span class="nav-num">04</span> Décorateur horodateur</a>
+  <a href="#ex5"><span class="nav-num">05</span> Jeu de la vie</a>
+  <a href="#ex6"><span class="nav-num">06</span> Grille ASCII</a>
+  <a href="#ex7"><span class="nav-num">07</span> Vecteur3D</a>
+  <a href="#ex8"><span class="nav-num">08</span> Ma liste particulière</a>
+  <a href="#ex9"><span class="nav-num">09</span> Paquet de cartes</a>
+  <a href="#ex10"><span class="nav-num">10</span> CarteDePoker</a>
+</nav>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<main>
+
+<div class="page-header">
+  <h1>Exercices d'examens — Python</h1>
+  <p>Tous les exercices uniques extraits des captures d'écran, avec énoncés complets et solutions de référence.</p>
+  <div class="badge-row">
+    <span class="badge badge-purple">Fonctions récursives</span>
+    <span class="badge badge-pink">Classes &amp; héritage</span>
+    <span class="badge badge-teal">Décorateurs</span>
+    <span class="badge badge-yellow">Structures de données</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     EXERCICE 1 — SOMME PONDÉRÉE RÉCURSIVE
+════════════════════════════════════════════ -->
+<section class="exercise" id="ex1">
+  <div class="ex-header">
+    <div class="ex-num">01</div>
+    <div>
+      <div class="ex-title">Somme pondérée récursive</div>
+      <div class="ex-subtitle">Fonction récursive — <code>sommep</code></div>
+    </div>
+  </div>
+
+  <!-- ÉNONCÉ -->
+  <div class="section">
+    <div class="section-label">Énoncé</div>
+    <div class="enonce">
+      <p>On vous demande de définir une <strong>fonction</strong> nommée <code>sommep</code> qui accepte en argument une liste pouvant <strong>récursivement</strong> contenir d'autres listes, et qui <strong>retourne</strong> la somme pondérée des nombres qui s'y trouvent.</p>
+      <p>La somme pondérée d'une liste [a₁, a₂, …, aₙ] se calcule par la formule :</p>
+      <div class="math">∑ i × aᵢ  (pour i allant de 1 à n)</div>
+      <p>Par exemple, l'expression <code>sommep([2, 7, 1, 3])</code> doit retourner la valeur :</p>
+      <div class="math">1×2 + 2×7 + 3×1 + 4×3 = 31</div>
+      <p>Lorsqu'un élément de la liste est une autre liste, il s'agit simplement de faire un appel <strong>récursif</strong> sur la liste. Par exemple, l'expression <code>sommep([7, [3, 1], 5])</code> doit retourner la valeur :</p>
+      <div class="math">1×7 + 2×(1×3 + 2×1) + 3×5 = 32</div>
+      <p>Votre fonction doit accepter un nombre <strong>arbitraire</strong> de listes imbriquées.</p>
+      <p>Bref, lorsqu'un élément est un entier, il faut ajouter à la somme son <strong>rang</strong> fois sa <strong>valeur</strong>, et lorsque l'élément est une liste, il faut ajouter à la somme son rang fois la valeur d'un <strong>appel récursif</strong> sur la liste en question. Tous les types de données autres que les entiers et les listes doivent être <strong>ignorés</strong> (on passe au suivant).</p>
+      <p>Notez que pour cet exercice, les rangs débutent toujours à <strong>1</strong>.</p>
+      <div class="tip"><strong>Rappel :</strong> pour déterminer si un objet est bien une instance d'une classe <code>w</code>, faites simplement appel à la fonction <code>isinstance</code>.</div>
+    </div>
+  </div>
+
+  <!-- SOLUTION -->
+  <div class="section">
+    <div class="section-label">Solution de référence</div>
+    <div class="solution-box">
+      <div class="code-block">
+        <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; sommep.py</div>
+        <pre><span class="kw">def</span> <span class="fn">sommep</span>(liste):
+    <span class="cm"># initialiser une variable d'accumulation</span>
+    somme <span class="op">=</span> <span class="nm">0</span>
+    <span class="kw">for</span> i, val <span class="kw">in</span> <span class="bi">enumerate</span>(liste, <span class="nm">1</span>):
+        <span class="kw">if</span> <span class="bi">isinstance</span>(val, <span class="bi">int</span>):
+            somme <span class="op">+=</span> i<span class="op">*</span>val
+
+        <span class="kw">elif</span> <span class="bi">isinstance</span>(val, <span class="bi">list</span>):
+            somme <span class="op">+=</span> i<span class="op">*</span><span class="fn">sommep</span>(val)
+
+    <span class="kw">return</span> somme</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+     EXERCICE 2 — CLASSE COMPOSÉE (AetB)
+════════════════════════════════════════════ -->
+<section class="exercise" id="ex2">
+  <div class="ex-header">
+    <div class="ex-num">02</div>
+    <div>
+      <div class="ex-title">Classe composée</div>
+      <div class="ex-subtitle">Classe Python — <code>AetB</code></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Énoncé</div>
+    <div class="enonce">
+      <p>Soit les classes <code>A</code> et <code>B</code> définies dans la cellule de contexte. Il s'agit de deux classes dont les constructeurs acceptent un argument pouvant être soit un <strong>nombre entier</strong>, soit une <strong>chaîne de caractères</strong>. Étudiez ces deux classes afin de bien comprendre leur fonctionnement.</p>
+      <p>On vous demande de définir une <strong>classe</strong> nommée <code>AetB</code> qui est <strong>composée</strong> d'une instance de la classe <code>A</code> et d'une instance de la classe <code>B</code>. Votre classe doit définir les <strong>cinq (5)</strong> méthodes suivantes :</p>
+      <ol>
+        <li>Un <strong>constructeur</strong> qui accepte <strong>deux</strong> arguments, chacun pouvant être soit un nombre, soit une chaîne de caractères. À partir de ces deux arguments, votre constructeur doit initialiser deux variables d'instance nommées <code>A</code> et <code>B</code> (attention à la casse majuscule), la 1re en créant une <strong>instance</strong> de la classe <code>A</code>, et la 2e en créant une <strong>instance</strong> de la classe <code>B</code>.</li>
+        <li>Une méthode spéciale de <strong>conversion en chaîne de caractères</strong>.</li>
+        <li>Une méthode spéciale pour déterminer si deux instances sont <strong>équivalentes</strong> (opérateur <code>==</code>) ; deux instances <code>AetB</code> sont équivalentes si et seulement si leurs deux composantes sont équivalentes.</li>
+        <li>Une méthode spéciale pour implanter la <strong>somme</strong> de deux instances (opérateur <code>+</code>).</li>
+        <li>Une méthode spéciale pour implanter l'opérateur <code>[]</code> afin d'extraire l'une ou l'autre des deux composantes de l'instance. L'indice <code>0</code> sera utilisé pour désigner la composante <code>A</code>, alors que l'indice <code>1</code> désignera la composante <code>B</code>. Tout autre indice doit soulever une exception de type <code>IndexError</code>.</li>
+      </ol>
+      <p>Par exemple, l'expression <code>print(AetB(1, 2))</code> doit afficher :</p>
+      <div class="output-block">(A: 1) et (B: 2)</div>
+      <p>L'expression <code>AetB(1, 2) + AetB(3, 4)</code> doit retourner une instance <code>AetB(1+3, 2+4)</code> (ce qui équivaut à <code>AetB(4, 6)</code>).</p>
+      <p>L'expression <code>AetB(1, 2)[0]</code> doit retourner <code>A(1)</code> et <code>AetB(1, 2)[1]</code> doit retourner <code>B(2)</code>, et <code>AetB(1, 2)[2]</code> doit soulever une exception de type <code>IndexError</code>.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Tests de validation</div>
+    <div class="code-block">
+      <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; tests</div>
+      <pre><span class="cm"># tester le constructeur</span>
+<span class="kw">assert</span> <span class="cl">AetB</span>(<span class="nm">1</span>, <span class="nm">2</span>).A <span class="op">==</span> <span class="cl">A</span>(<span class="nm">1</span>)
+<span class="kw">assert</span> <span class="cl">AetB</span>(<span class="nm">1</span>, <span class="nm">2</span>).B <span class="op">==</span> <span class="cl">B</span>(<span class="nm">2</span>)
+
+<span class="cm"># tester la conversion en chaîne de caractères</span>
+<span class="kw">assert</span> <span class="bi">str</span>(<span class="cl">AetB</span>(<span class="nm">1</span>, <span class="nm">2</span>)) <span class="op">==</span> <span class="st">'(A: 1) et (B: 2)'</span>
+
+<span class="cm"># tester l'addition</span>
+<span class="kw">assert</span> <span class="cl">AetB</span>(<span class="nm">1</span>, <span class="nm">2</span>) <span class="op">+</span> <span class="cl">AetB</span>(<span class="nm">3</span>, <span class="nm">4</span>) <span class="op">==</span> <span class="cl">AetB</span>(<span class="nm">4</span>, <span class="nm">6</span>)
+
+<span class="cm"># tester l'opérateur []</span>
+<span class="kw">assert</span> <span class="cl">AetB</span>(<span class="nm">1</span>, <span class="nm">2</span>)[<span class="nm">0</span>] <span class="op">==</span> <span class="cl">A</span>(<span class="nm">1</span>) <span class="kw">and</span> <span class="cl">AetB</span>(<span class="nm">1</span>, <span class="nm">2</span>)[<span class="nm">1</span>] <span class="op">==</span> <span class="cl">B</span>(<span class="nm">2</span>)</pre>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Solution de référence</div>
+    <div class="solution-box">
+      <div class="code-block">
+        <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; AetB.py</div>
+        <pre><span class="kw">class</span> <span class="cl">AetB</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, a, b):
+        self.A <span class="op">=</span> <span class="cl">A</span>(a)
+        self.B <span class="op">=</span> <span class="cl">B</span>(b)
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(self):
+        <span class="kw">return</span> <span class="st">f'({self.A}) et ({self.B})'</span>
+
+    <span class="kw">def</span> <span class="fn">__eq__</span>(self, other):
+        <span class="kw">return</span> self.A <span class="op">==</span> other.A <span class="kw">and</span> self.B <span class="op">==</span> other.B
+
+    <span class="kw">def</span> <span class="fn">__add__</span>(self, other):
+        <span class="kw">return</span> <span class="cl">AetB</span>(self.A.a<span class="op">+</span>other.A.a, self.B.b<span class="op">+</span>other.B.b)
+
+    <span class="kw">def</span> <span class="fn">__getitem__</span>(self, indice):
+        <span class="kw">if not</span> <span class="nm">0</span> <span class="op">&lt;=</span> indice <span class="op">&lt;=</span> <span class="nm">1</span>:
+            <span class="kw">raise</span> <span class="cl">IndexError</span>(<span class="st">f"Votre indice {indice} est invalide"</span>)
+        <span class="kw">return</span> self.A <span class="kw">if</span> indice <span class="op">==</span> <span class="nm">0</span> <span class="kw">else</span> self.B</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+     EXERCICE 3 — DÉCORATEUR D'AUTHENTIFICATION
+════════════════════════════════════════════ -->
+<section class="exercise" id="ex3">
+  <div class="ex-header">
+    <div class="ex-num">03</div>
+    <div>
+      <div class="ex-title">Décorateur d'authentification</div>
+      <div class="ex-subtitle">Décorateur paramétré — <code>authentification</code></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Énoncé</div>
+    <div class="enonce">
+      <p>Votre tâche est de créer un décorateur <strong>sous forme de fonction</strong> nommé <code>authentification</code> qui permettra d'ajouter des informations d'authentification à une session avant d'appeler une fonction. Le décorateur doit prendre deux paramètres, <code>idul</code> et <code>secret</code>, et doit ajouter un attribut <code>auth</code> à la session avec ces informations. Voici un exemple d'utilisation du décorateur :</p>
+      <div class="code-block">
+        <pre><span class="op">@</span><span class="fn">authentification</span>(<span class="st">"josmi42"</span>, <span class="st">"2b0caf03-498f-4d30-8e6d-af3512d66cf5"</span>)
+<span class="kw">def</span> <span class="fn">obtenir_données</span>(session, url, params):
+    <span class="kw">return</span> session.<span class="fn">get</span>(url, params<span class="op">=</span>params)</pre>
+      </div>
+      <p>Dans cet exemple, la fonction <code>obtenir_données</code> est décorée avec le décorateur <code>authentification</code>. Lorsque la fonction est appelée, le décorateur ajoute les informations d'authentification à la session avant d'appeler la fonction. Vous devez implémenter le décorateur <code>authentification</code> de manière à ce qu'il fonctionne correctement avec la fonction fournie.</p>
+      <p>L'ajout des informations d'authentification à la session se fait en modifiant l'attribut <code>auth</code> de la session :</p>
+      <div class="code-block">
+        <pre>session.auth <span class="op">=</span> (idul, secret)</pre>
+      </div>
+      <p>Notez que la fonction décorée peut prendre des paramètres <strong>arbitraires</strong> en plus de la session, mais que le premier paramètre sera toujours l'argument <code>session</code>. Par exemple, en ajoutant un paramètre <code>data</code> à la fonction :</p>
+      <div class="code-block">
+        <pre><span class="op">@</span><span class="fn">authentification</span>(<span class="st">"josmi42"</span>, <span class="st">"2b0caf03-498f-4d30-8e6d-af3512d66cf5"</span>)
+<span class="kw">def</span> <span class="fn">envoyer_données</span>(session, url, params, data):
+    <span class="kw">return</span> session.<span class="fn">post</span>(url, params<span class="op">=</span>params, data<span class="op">=</span>data)</pre>
+      </div>
+      <p>Pour qu'un décorateur sous forme de fonction puisse accepter des paramètres, il doit être défini comme une fonction, ayant comme paramètres ceux souhaités, et qui retourne une fonction décorateur tel que montré dans le module optionnel touchant aux décorateurs. Cela implique donc de définir <strong>trois (3)</strong> fonctions imbriquées.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Solution de référence</div>
+    <div class="solution-box">
+      <div class="code-block">
+        <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; authentification.py</div>
+        <pre><span class="cm"># 1re fonction qui accepte les paramètres du décorateur</span>
+<span class="kw">def</span> <span class="fn">authentification</span>(idul, secret):
+    <span class="cm"># 2e fonction qui accepte la fonction à décorer</span>
+    <span class="kw">def</span> <span class="fn">decorator</span>(function):
+        <span class="cm"># 3e fonction qui enrobe la fonction décorée</span>
+        <span class="kw">def</span> <span class="fn">wrapper</span>(session, <span class="op">*</span>args, <span class="op">**</span>kwargs):
+            <span class="cm"># ajouter l'authentification à la session</span>
+            session.auth <span class="op">=</span> (idul, secret)
+
+            <span class="cm"># retourner le résultat</span>
+            <span class="kw">return</span> <span class="fn">function</span>(session, <span class="op">*</span>args, <span class="op">**</span>kwargs)
+
+        <span class="cm"># retourner la fonction décorée</span>
+        <span class="kw">return</span> wrapper
+
+    <span class="cm"># retourner le décorateur paramétré</span>
+    <span class="kw">return</span> decorator</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+     EXERCICE 4 — DÉCORATEUR HORODATEUR
+════════════════════════════════════════════ -->
+<section class="exercise" id="ex4">
+  <div class="ex-header">
+    <div class="ex-num">04</div>
+    <div>
+      <div class="ex-title">Décorateur horodateur</div>
+      <div class="ex-subtitle">Décorateur simple — <code>horodateur</code></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Énoncé</div>
+    <div class="enonce">
+      <p>Définissez un <strong>décorateur</strong> nommé <code>horodateur</code> qui, à <strong>chaque</strong> appel de la fonction décorée, affiche la <strong>date</strong> de l'appel ainsi que la valeur de ses <strong>arguments</strong>. Implantez votre décorateur sous la forme d'une <strong>fonction</strong> qui accepte en argument une autre fonction.</p>
+      <p>Sur une même ligne, le format d'affichage doit comprendre les éléments suivants :</p>
+      <ol>
+        <li>la <strong>date</strong> du jour sous le format <code>aaaa-mm-jj</code> (le format par défaut des dates) ;</li>
+        <li>un espace ;</li>
+        <li>le <strong>nom</strong> de la fonction décorée ;</li>
+        <li>une parenthèse ouvrante ;</li>
+        <li>les arguments <strong>positionnels</strong> utilisés lors de l'appel, séparés par des virgules ;</li>
+        <li>les arguments <strong>nommés</strong> utilisés lors de l'appel, séparés par des virgules ;</li>
+        <li>une parenthèse fermante.</li>
+      </ol>
+      <p>Par exemple :</p>
+      <div class="code-block">
+        <pre><span class="op">@</span><span class="fn">horodateur</span>
+<span class="kw">def</span> <span class="fn">fonction_de_test</span>(<span class="op">*</span>args, <span class="op">**</span>kargs):
+    <span class="kw">pass</span></pre>
+      </div>
+      <p>appelée avec les arguments :</p>
+      <div class="code-block">
+        <pre><span class="fn">fonction_de_test</span>(<span class="nm">1</span>, <span class="nm">5</span>, <span class="nm">3</span>, a<span class="op">=</span><span class="nm">9</span>, z<span class="op">=</span><span class="nm">13</span>)</pre>
+      </div>
+      <p>doit produire l'affichage :</p>
+      <div class="output-block">2025-04-24 fonction_de_test(1, 5, 3, a=9, z=13)</div>
+      <p>Notez bien que ceci n'est qu'un exemple pour un appel effectué le 24 avril 2025. Votre décorateur doit être <strong>général</strong>, c'est-à-dire produire l'affichage qui correspond à la <strong>date du jour</strong>, au nom de la <strong>fonction décorée</strong> ainsi qu'aux valeurs <strong>effectives</strong> des arguments utilisés lors de l'appel. N'oubliez pas non plus que votre décorateur doit <strong>appeler</strong> la fonction décorée avec l'ensemble de ses arguments (positionnels et nommés) et <strong>retourner</strong> son résultat.</p>
+      <p>Dans le cas des <strong>arguments nommés</strong>, assurez-vous de les énumérer dans l'ordre <strong>lexicographique</strong> (l'ordre des mots d'un dictionnaire traditionnel).</p>
+      <div class="note">
+        <strong>Indices :</strong>
+        <ol style="margin-top:8px; padding-left:18px;">
+          <li>pour obtenir la date du jour, faites appel à la méthode <code>today</code> de la classe <code>datetime.date</code> (cette classe est d'ailleurs déjà importée dans le contexte de cet exercice) ;</li>
+          <li>pour connaître le nom d'un objet de la classe <code>function</code>, il suffit d'accéder à son attribut <code>__name__</code> ;</li>
+          <li>affichez les valeurs des arguments reçus en utilisant <code>repr</code> pour les convertir en chaînes de caractères, et utilisez la méthode <code>join</code> pour produire des séquences de chaînes séparées par des virgules ;</li>
+          <li>pour le tri lexicographique, utilisez simplement <code>sorted</code>.</li>
+        </ol>
+      </div>
+      <div class="tip"><strong>Contexte de l'exercice :</strong> <code>from datetime import date</code></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Solution de référence</div>
+    <div class="solution-box">
+      <div class="code-block">
+        <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; horodateur.py</div>
+        <pre><span class="kw">from</span> datetime <span class="kw">import</span> date
+
+<span class="kw">def</span> <span class="fn">horodateur</span>(function):
+    <span class="kw">def</span> <span class="fn">wrapper</span>(<span class="op">*</span>args, <span class="op">**</span>kwargs):
+        <span class="cm"># construire la liste des arguments positionnels</span>
+        positionnels <span class="op">=</span> [<span class="bi">repr</span>(a) <span class="kw">for</span> a <span class="kw">in</span> args]
+
+        <span class="cm"># construire la liste des arguments nommés, triés lexicographiquement</span>
+        nommes <span class="op">=</span> [<span class="st">f"{k}={<span class="bi">repr</span>(v)}"</span> <span class="kw">for</span> k, v <span class="kw">in</span> <span class="bi">sorted</span>(kwargs.items())]
+
+        <span class="cm"># afficher date + nom + arguments</span>
+        <span class="bi">print</span>(<span class="st">f"{date.today()} {function.__name__}({', '.join(positionnels + nommes)})"</span>)
+
+        <span class="cm"># appeler et retourner le résultat</span>
+        <span class="kw">return</span> <span class="fn">function</span>(<span class="op">*</span>args, <span class="op">**</span>kwargs)
+
+    <span class="kw">return</span> wrapper</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+     EXERCICE 5 — JEU DE LA VIE
+════════════════════════════════════════════ -->
+<section class="exercise" id="ex5">
+  <div class="ex-header">
+    <div class="ex-num">05</div>
+    <div>
+      <div class="ex-title">Jeu de la vie</div>
+      <div class="ex-subtitle">Automate cellulaire — <code>jeu_de_vie</code></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Énoncé</div>
+    <div class="enonce">
+      <p>Le jeu de la vie est un jeu de simulation mathématique <strong>sans</strong> joueur explicite, où des cellules vivantes évoluent de génération en génération. Il s'agit d'un automate qui joue de lui-même. Le jeu est habituellement représenté sur une grille 2D dont les dimensions sont a priori <strong>indéfinies</strong>. Chaque case de la grille peut héberger une cellule, auquel cas on dit que la case correspondante est <strong>vivante</strong>. Sinon, la case est <strong>morte</strong>. L'état d'une case à la <strong>génération</strong> suivante dépend de son état actuel ainsi que de l'état de ses huit cases adjacentes.</p>
+      <p><strong>Les règles du jeu sont les suivantes :</strong></p>
+      <ol>
+        <li>Toute case <strong>vivante</strong> entourée d'exactement deux (2) ou trois (3) cases <strong>vivantes</strong> va survivre à la génération suivante.</li>
+        <li>Toute case <strong>morte</strong> entourée d'exactement trois (3) cases <strong>vivantes</strong> va renaître à la génération suivante.</li>
+        <li>Dans <strong>tous</strong> les autres cas, la case sera <strong>morte</strong> à la génération suivante.</li>
+      </ol>
+      <p>Par exemple, voici une grille 6×6 qui selon ces règles produira une oscillation de génération en génération :</p>
+      <div class="output-block">. . . . . .    . . . . . .    . . . . . .
+. . . . . .    . . + . . .    . . . . . .
+. . + + + .  → . + . + . .  → . . + + + .  → etc.
+. + + + . .    . + . + . .    . + + + . .
+. . . . . .    . . + . . .    . . . . . .
+. . . . . .    . . . . . .    . . . . . .</div>
+      <p>où les symboles <code>+</code> et <code>.</code> représentent respectivement les cases vivantes et mortes.</p>
+      <p>On vous demande de coder une fonction nommée <code>jeu_de_vie</code> qui accepte en entrée un <strong>ensemble</strong> de tuples (i, j) représentant les coordonnées des cases <strong>vivantes</strong> actuelles, et qui <strong>retourne</strong> en sortie l'ensemble des cases vivantes pour la <strong>génération</strong> suivante dans la séquence du jeu.</p>
+      <div class="note">
+        <strong>Indices pour résoudre ce problème :</strong>
+        <ol style="margin-top:8px; padding-left:18px;">
+          <li>Initialiser un <strong>dictionnaire</strong> vide afin de pouvoir compter les nombres de voisins de chaque case potentielle.</li>
+          <li>Pour chaque case (i, j) de l'<strong>ensemble</strong> actuel des cases vivantes :
+            <ul>
+              <li>A. Créez la liste des huit (8) cases voisines.</li>
+              <li>B. Pour <strong>chacune</strong> de ces cases voisines : Ajoutez un (+1) à la case correspondante dans un <strong>dictionnaire</strong> de voisinage.</li>
+            </ul>
+          </li>
+          <li>Parcourir les éléments du dictionnaire de <strong>voisinage</strong> en ne retenant que les cases qui respectent les règles du jeu quant au nombre de voisins.</li>
+          <li>Retourner l'ensemble de ces cases vivantes pour la génération suivante du jeu.</li>
+        </ol>
+      </div>
+      <div class="tip"><strong>Note :</strong> dans le contexte d'un énoncé <code>if</code>, l'opérateur <code>in</code> peut servir à tester si une clé <strong>appartient</strong> à un dictionnaire ou à un ensemble. Dans le contexte d'un énoncé <code>for</code>, ce même opérateur permet <strong>d'itérer</strong> sur les clés d'un dictionnaire, ou sur les éléments d'un ensemble.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Tests de validation</div>
+    <div class="code-block">
+      <pre><span class="kw">for</span> config <span class="kw">in</span> [tob, blinker, toad, beacon]:
+    <span class="bi">print</span>(<span class="fn">jeu_de_vie</span>(config))
+
+<span class="cm"># Sortie attendue :</span>
+<span class="st">{(1, 0), (1, 2), (2, 1), (0, 1)}</span>
+<span class="st">{(1, 0), (1, 1), (1, 2)}</span>
+<span class="st">{(3, 1), (2, 0), (2, 3), (0, 2), (1, 0), (1, 3)}</span>
+<span class="st">{(0, 1), (0, 0), (2, 3), (3, 3), (1, 0), (3, 2)}</span></pre>
+    </div>
+    <div class="note"><strong>Notez</strong> que l'ordre des éléments d'un ensemble est <strong>imprévisible</strong> et sans importance.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Solution de référence</div>
+    <div class="solution-box">
+      <div class="code-block">
+        <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; jeu_de_vie.py</div>
+        <pre><span class="kw">def</span> <span class="fn">jeu_de_vie</span>(cases):
+    <span class="cm"># initialiser le dictionnaire de voisinage</span>
+    voisinage <span class="op">=</span> {}
+
+    <span class="cm"># pour chaque case vivante</span>
+    <span class="kw">for</span> case <span class="kw">in</span> cases:
+        i, j <span class="op">=</span> case
+        <span class="cm"># créer la liste des huit cases voisines</span>
+        voisins <span class="op">=</span> [
+            (i<span class="op">-</span><span class="nm">1</span>, j<span class="op">-</span><span class="nm">1</span>),
+            (i,   j<span class="op">-</span><span class="nm">1</span>),
+            (i<span class="op">+</span><span class="nm">1</span>, j<span class="op">-</span><span class="nm">1</span>),
+            (i<span class="op">-</span><span class="nm">1</span>, j),
+            (i<span class="op">+</span><span class="nm">1</span>, j),
+            (i<span class="op">-</span><span class="nm">1</span>, j<span class="op">+</span><span class="nm">1</span>),
+            (i,   j<span class="op">+</span><span class="nm">1</span>),
+            (i<span class="op">+</span><span class="nm">1</span>, j<span class="op">+</span><span class="nm">1</span>)
+        ]
+
+        <span class="cm"># ajouter un (1) à chaque voisin</span>
+        <span class="kw">for</span> voisin <span class="kw">in</span> voisins:
+            voisinage[voisin] <span class="op">=</span> voisinage.<span class="fn">get</span>(voisin, <span class="nm">0</span>) <span class="op">+</span> <span class="nm">1</span>
+
+    <span class="cm"># retourner les cases du voisinage qui respectent les règles du jeu</span>
+    <span class="kw">return</span> {
+        case <span class="kw">for</span> case <span class="kw">in</span> voisinage
+        <span class="kw">if</span> case <span class="kw">in</span> cases <span class="kw">and</span> <span class="nm">2</span> <span class="op">&lt;=</span> voisinage[case] <span class="op">&lt;=</span> <span class="nm">3</span>
+        <span class="kw">or</span> voisinage[case] <span class="op">==</span> <span class="nm">3</span>
+    }</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+     EXERCICE 6 — GRILLE ASCII
+════════════════════════════════════════════ -->
+<section class="exercise" id="ex6">
+  <div class="ex-header">
+    <div class="ex-num">06</div>
+    <div>
+      <div class="ex-title">Grille en art ASCII</div>
+      <div class="ex-subtitle">Fonction — <code>grille_ascii</code></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Énoncé</div>
+    <div class="enonce">
+      <p>Codez une <strong>fonction</strong> nommée <code>grille_ascii</code> qui accepte en entrée <strong>trois (3)</strong> arguments :</p>
+      <ol>
+        <li>Le nombre <em>m &gt; 0</em> de lignes de la grille ;</li>
+        <li>Le nombre <em>n &gt; 0</em> de colonnes de la grille ;</li>
+        <li>L'<strong>ensemble</strong> des tuples (i, j) des cases actives de la grille.</li>
+      </ol>
+      <p>Pour les coordonnées des cases de la grille, nous adopterons la convention habituelle du Python, à savoir que les indices débutent <strong>à zéro</strong>, et nous placerons l'origine de la grille <strong>en haut à gauche</strong>.</p>
+      <p>Votre fonction doit <strong>retourner</strong> une chaîne de caractères qui représente la grille en « <em>art ASCII</em> » selon le format suivant. Les cases actives y sont représentées par des plus (<code>+</code>) et les autres cases par des points (<code>.</code>). Par exemple, l'expression suivante :</p>
+      <div class="code-block">
+        <pre><span class="fn">grille_ascii</span>(<span class="nm">3</span>, <span class="nm">3</span>, {(<span class="nm">0</span>, <span class="nm">1</span>), (<span class="nm">1</span>, <span class="nm">0</span>), (<span class="nm">1</span>, <span class="nm">2</span>), (<span class="nm">2</span>, <span class="nm">1</span>)})</pre>
+      </div>
+      <p>doit produire la chaîne suivante :</p>
+      <div class="code-block">
+        <pre><span class="st">' -----\n|. + .|\n|+ . +|\n|. + .|\n -----'</span></pre>
+      </div>
+      <p>qui lorsqu'affichée avec <code>print</code> produira :</p>
+      <div class="ascii-demo"> -----
+|. + .|
+|+ . +|
+|. + .|
+ -----</div>
+      <p>Notez qu'un <strong>espace</strong> est inséré entre les cases d'une <strong>même</strong> ligne afin d'équilibrer les espacements horizontal et vertical.</p>
+      <p>Testez <strong>bien</strong> votre solution avec les tuples d'arguments définis dans le <strong>contexte</strong> de cet exercice. Par exemple, en exécutant :</p>
+      <div class="code-block">
+        <pre>configurations <span class="op">=</span> [tob, blinker, toad, beacon]
+<span class="kw">for</span> config <span class="kw">in</span> configurations:
+    <span class="bi">print</span>(<span class="fn">grille_ascii</span>(<span class="op">*</span>config))</pre>
+      </div>
+      <p>Vous devez obtenir à la console :</p>
+      <div class="ascii-demo"> -----
+|. + .|
+|+ . +|
+|. + .|
+ -----
+ -----
+|. + .|
+|. + .|
+|. + .|
+ -----
+ -------
+|. . . .|
+|. + + +|
+|+ + + .|
+|. . . .|
+ -------
+ -------
+|+ + . .|
+|+ + . .|
+|. . + +|
+|. . + +|
+ -------</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Solution de référence</div>
+    <div class="solution-box">
+      <div class="code-block">
+        <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; grille_ascii.py</div>
+        <pre><span class="kw">def</span> <span class="fn">grille_ascii</span>(m, n, cases):
+    <span class="cm"># créer l'en-tête de la grille</span>
+    en_tête <span class="op">=</span> <span class="st">f" {'-'*(2*n-1)}"</span>
+
+    <span class="cm"># insérer l'en-tête devant la première ligne</span>
+    lignes <span class="op">=</span> [en_tête]
+
+    <span class="cm"># pour chaque ligne</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(m):
+        ligne_courante <span class="op">=</span> []
+        <span class="cm"># et chaque colonne</span>
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="bi">range</span>(n):
+            <span class="kw">if</span> (i, j) <span class="kw">in</span> cases:
+                <span class="cm"># la case est active</span>
+                ligne_courante.<span class="fn">append</span>(<span class="st">'+'</span>)
+            <span class="kw">else</span>:
+                <span class="cm"># la case est inactive</span>
+                ligne_courante.<span class="fn">append</span>(<span class="st">'.'</span>)
+
+        <span class="cm"># joindre les colonnes et ajouter une nouvelle ligne</span>
+        lignes.<span class="fn">append</span>(<span class="st">f"|{' '.join(ligne_courante)}|"</span>)
+
+    <span class="cm"># insérer l'en-tête à la suite de la dernière ligne</span>
+    lignes.<span class="fn">append</span>(en_tête)
+
+    <span class="cm"># retourner la jointure des différentes lignes</span>
+    <span class="kw">return</span> <span class="st">'\n'</span>.<span class="fn">join</span>(lignes)</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+     EXERCICE 7 — VECTEUR3D
+════════════════════════════════════════════ -->
+<section class="exercise" id="ex7">
+  <div class="ex-header">
+    <div class="ex-num">07</div>
+    <div>
+      <div class="ex-title">Vecteur 3D</div>
+      <div class="ex-subtitle">Classe Python — <code>Vecteur3D</code></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Énoncé</div>
+    <div class="enonce">
+      <p>Créez une classe <code>Vecteur3D</code> qui encapsule un vecteur à trois dimensions. La classe doit définir les méthodes suivantes :</p>
+      <ul>
+        <li>Un <strong>constructeur</strong> <code>__init__(self, x, y, z)</code> qui initialise les trois composantes du vecteur.</li>
+        <li>L'opérateur <strong>addition</strong> <code>+</code> (méthode <code>__add__</code>) entre deux <code>Vecteur3D</code>.</li>
+        <li>L'opérateur <strong>soustraction</strong> <code>-</code> (méthode <code>__sub__</code>) entre deux <code>Vecteur3D</code>.</li>
+        <li>L'opérateur <strong>multiplication</strong> <code>*</code> (méthode <code>__mul__</code>) : soit entre deux <code>Vecteur3D</code> (produit composante par composante), soit entre un <code>Vecteur3D</code> et un scalaire (<code>int</code> ou <code>float</code>).</li>
+        <li>La conversion en <strong>chaîne de caractères</strong> <code>__str__</code> qui retourne <code>(x, y, z)</code>.</li>
+        <li>La méthode <strong><code>norme</code></strong> qui calcule la norme euclidienne du vecteur.</li>
+      </ul>
+      <p>Dans votre constructeur, <strong>assurez-vous</strong> que les trois arguments reçus sont bien des <strong>nombres</strong>, c'est-à-dire des instances des classes <code>int</code> ou <code>float</code>. De même, pour vos opérateurs <code>+</code>, <code>-</code> et <code>*</code>, <strong>assurez-vous</strong> que l'opérande à la droite de l'opérateur est <strong>valide</strong>. Sinon, <strong>soulevez</strong> une exception de type <code>TypeError</code>.</p>
+      <div class="tip"><strong>Rappel :</strong> pour déterminer si un objet <code>object</code> est bien une instance de la classe <code>w</code>, faites simplement appel à la fonction <code>isinstance</code>.</div>
+      <p>Par exemple :</p>
+      <div class="code-block">
+        <pre>x <span class="op">=</span> <span class="cl">Vecteur3D</span>(<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>)
+y <span class="op">=</span> <span class="cl">Vecteur3D</span>(<span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>)
+<span class="bi">print</span>(<span class="st">'x ='</span>, x)
+<span class="bi">print</span>(<span class="st">'y ='</span>, y)
+<span class="bi">print</span>(<span class="st">'x+y ='</span>, x<span class="op">+</span>y)
+<span class="bi">print</span>(<span class="st">'x-y ='</span>, x<span class="op">-</span>y)
+<span class="bi">print</span>(<span class="st">'x*y ='</span>, x<span class="op">*</span>y)
+<span class="bi">print</span>(<span class="st">'x*2 ='</span>, x<span class="op">*</span><span class="nm">2</span>)
+<span class="bi">print</span>(<span class="st">'x.norme() ='</span>, x.<span class="fn">norme</span>())</pre>
+      </div>
+      <p>Doit produire :</p>
+      <div class="output-block">x = (1, 2, 3)
+y = (4, 5, 6)
+x+y = (5, 7, 9)
+x-y = (-3, -3, -3)
+x*y = (4, 10, 18)
+x*2 = (2, 4, 6)
+x.norme() = 3.7416573867739413</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Solution de référence</div>
+    <div class="solution-box">
+      <div class="code-block">
+        <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; Vecteur3D.py</div>
+        <pre><span class="kw">class</span> <span class="cl">Vecteur3D</span>:
+    <span class="st">'''Classe qui encapsule un vecteur à trois dimensions.'''</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, x, y, z):
+        <span class="st">'''Construire un vecteur.'''</span>
+        <span class="kw">if not</span> <span class="bi">isinstance</span>(x, (<span class="bi">int</span>, <span class="bi">float</span>)):
+            <span class="kw">raise</span> <span class="cl">TypeError</span>(<span class="st">f"Votre composante x de type {type(x)} est invalide."</span>)
+        self.x <span class="op">=</span> x
+
+        <span class="kw">if not</span> <span class="bi">isinstance</span>(y, (<span class="bi">int</span>, <span class="bi">float</span>)):
+            <span class="kw">raise</span> <span class="cl">TypeError</span>(<span class="st">f"Votre composante y de type {type(y)} est invalide."</span>)
+        self.y <span class="op">=</span> y
+
+        <span class="kw">if not</span> <span class="bi">isinstance</span>(z, (<span class="bi">int</span>, <span class="bi">float</span>)):
+            <span class="kw">raise</span> <span class="cl">TypeError</span>(<span class="st">f"Votre composante z de type {type(z)} est invalide."</span>)
+        self.z <span class="op">=</span> z
+
+    <span class="kw">def</span> <span class="fn">__add__</span>(self, other):
+        <span class="st">'''Additionner deux vecteurs.'''</span>
+        <span class="kw">if not</span> <span class="bi">isinstance</span>(other, <span class="cl">Vecteur3D</span>):
+            <span class="kw">raise</span> <span class="cl">TypeError</span>(<span class="st">f"Le type {type(other)} est invalide pour l'addition"</span>)
+        <span class="kw">return</span> <span class="cl">Vecteur3D</span>(self.x<span class="op">+</span>other.x, self.y<span class="op">+</span>other.y, self.z<span class="op">+</span>other.z)
+
+    <span class="kw">def</span> <span class="fn">__sub__</span>(self, other):
+        <span class="st">'''Soustraire deux vecteurs.'''</span>
+        <span class="kw">if not</span> <span class="bi">isinstance</span>(other, <span class="cl">Vecteur3D</span>):
+            <span class="kw">raise</span> <span class="cl">TypeError</span>(<span class="st">f"Le type {type(other)} est invalide pour la soustraction"</span>)
+        <span class="kw">return</span> <span class="cl">Vecteur3D</span>(self.x<span class="op">-</span>other.x, self.y<span class="op">-</span>other.y, self.z<span class="op">-</span>other.z)
+
+    <span class="kw">def</span> <span class="fn">__mul__</span>(self, other):
+        <span class="st">'''Multiplier deux vecteurs, ou un vecteur par un scalaire.'''</span>
+        <span class="kw">if</span> <span class="bi">isinstance</span>(other, <span class="cl">Vecteur3D</span>):
+            <span class="kw">return</span> <span class="cl">Vecteur3D</span>(self.x<span class="op">*</span>other.x, self.y<span class="op">*</span>other.y, self.z<span class="op">*</span>other.z)
+        <span class="kw">elif</span> <span class="bi">isinstance</span>(other, (<span class="bi">int</span>, <span class="bi">float</span>)):
+            <span class="kw">return</span> <span class="cl">Vecteur3D</span>(self.x<span class="op">*</span>other, self.y<span class="op">*</span>other, self.z<span class="op">*</span>other)
+        <span class="kw">else</span>:
+            <span class="kw">raise</span> <span class="cl">TypeError</span>(<span class="st">f"Le type {type(other)} est invalide pour la multiplication"</span>)
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(self):
+        <span class="st">'''Convertir le vecteur en chaîne de caractères.'''</span>
+        <span class="kw">return</span> <span class="st">f'({self.x}, {self.y}, {self.z})'</span>
+
+    <span class="kw">def</span> <span class="fn">norme</span>(self):
+        <span class="st">'''Calculer la norme du vecteur.'''</span>
+        <span class="kw">return</span> (self.x<span class="op">**</span><span class="nm">2</span> <span class="op">+</span> self.y<span class="op">**</span><span class="nm">2</span> <span class="op">+</span> self.z<span class="op">**</span><span class="nm">2</span>)<span class="op">**</span><span class="nm">.5</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+     EXERCICE 8 — MA LISTE PARTICULIÈRE
+════════════════════════════════════════════ -->
+<section class="exercise" id="ex8">
+  <div class="ex-header">
+    <div class="ex-num">08</div>
+    <div>
+      <div class="ex-title">Ma liste particulière</div>
+      <div class="ex-subtitle">Héritage de <code>list</code> — <code>MaListe</code></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Énoncé</div>
+    <div class="enonce">
+      <p>On vous demande de définir une <strong>classe</strong> nommée <code>MaListe</code> qui <strong>hérite</strong> de toutes les fonctionnalités d'une <strong>liste</strong> standard (classe <code>list</code>), mais avec les particularités suivantes :</p>
+      <ul>
+        <li>Une méthode spéciale pour l'<strong>addition</strong> de deux listes. On veut que cette méthode retourne une nouvelle instance de <code>MaListe</code> dont chaque élément est le résultat de la somme des éléments correspondants des deux listes. Par exemple, <code>MaListe([1, 2, 3]) + MaListe([4, 5, 6])</code> doit retourner <code>MaListe([5, 7, 9])</code>. Si les deux listes de départ n'ont pas la même longueur, votre fonction doit soulever une exception de type <code>ValueError</code>.</li>
+        <li>Une méthode nommée <code>somme</code> qui retourne la <strong>somme</strong> des éléments de la liste.</li>
+        <li>Une méthode nommée <code>moyenne</code> qui retourne la <strong>moyenne</strong> des éléments de la liste (la division de la somme par la longueur). Cette méthode devrait faire appel à la méthode <code>somme</code> pour calculer la somme et à la fonction <code>len</code> pour déterminer la longueur de la liste.</li>
+      </ul>
+      <div class="warn"><strong>ATTENTION :</strong> assurez-vous d'utiliser la liste dont vous héritez et <strong>non</strong> d'ajouter une liste en variable d'instance.</div>
+      <p>Vous pouvez supposer que <strong>tous</strong> les éléments qui seront ajoutés à votre liste sont des <strong>entiers</strong>.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Solution de référence</div>
+    <div class="solution-box">
+      <div class="code-block">
+        <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; MaListe.py</div>
+        <pre><span class="kw">class</span> <span class="cl">MaListe</span>(<span class="bi">list</span>):
+    <span class="kw">def</span> <span class="fn">__add__</span>(self, other):
+        <span class="cm"># s'assurer que les deux listes ont la même longueur</span>
+        <span class="kw">if</span> <span class="bi">len</span>(self) <span class="op">!=</span> <span class="bi">len</span>(other):
+            <span class="kw">raise</span> <span class="cl">ValueError</span>(<span class="st">"Vos deux listes n'ont pas la même longueur"</span>)
+
+        <span class="kw">return</span> <span class="cl">MaListe</span>(x<span class="op">+</span>y <span class="kw">for</span> x, y <span class="kw">in</span> <span class="bi">zip</span>(self, other))
+
+    <span class="kw">def</span> <span class="fn">somme</span>(self):
+        <span class="cm"># retourner la somme des éléments</span>
+        <span class="kw">return</span> <span class="bi">sum</span>(self)
+
+    <span class="kw">def</span> <span class="fn">moyenne</span>(self):
+        <span class="cm"># retourner la somme divisée par la longueur</span>
+        <span class="kw">return</span> self.<span class="fn">somme</span>() <span class="op">/</span> <span class="bi">len</span>(self)</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+     EXERCICE 9 — PAQUET DE CARTES
+════════════════════════════════════════════ -->
+<section class="exercise" id="ex9">
+  <div class="ex-header">
+    <div class="ex-num">09</div>
+    <div>
+      <div class="ex-title">Paquet de cartes</div>
+      <div class="ex-subtitle">Héritage de <code>list</code> — <code>PaquetDeCartes</code></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Contexte — Classe <code>CarteBase</code></div>
+    <div class="code-block">
+      <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; contexte (déjà fourni)</div>
+      <pre><span class="kw">class</span> <span class="cl">CarteBase</span>:
+    noms   <span class="op">=</span> {<span class="nm">1</span>: <span class="st">'as'</span>, <span class="nm">11</span>: <span class="st">'valet'</span>, <span class="nm">12</span>: <span class="st">'dame'</span>, <span class="nm">13</span>: <span class="st">'roi'</span>}
+    sortes <span class="op">=</span> [<span class="st">'pique'</span>, <span class="st">'cœur'</span>, <span class="st">'carreau'</span>, <span class="st">'trèfle'</span>]
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, m, n):
+        <span class="kw">assert</span> <span class="nm">1</span> <span class="op">&lt;=</span> m <span class="op">&lt;=</span> <span class="nm">13</span> <span class="kw">and</span> <span class="nm">1</span> <span class="op">&lt;=</span> n <span class="op">&lt;=</span> <span class="nm">4</span>
+        self.numface  <span class="op">=</span> m
+        self.numsorte <span class="op">=</span> n
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(self):
+        <span class="kw">return</span> <span class="st">f'{type(self).__name__}({self.numface}, {self.numsorte})'</span>
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(self):
+        <span class="kw">return</span> <span class="st">f'{self.nom()} de {self.sorte()}'</span>
+
+    <span class="kw">def</span> <span class="fn">nom</span>(self):
+        <span class="cm"># retourne le nom de la carte (as, valet, dame, roi) ou le numéro</span>
+        <span class="kw">return</span> <span class="cl">CarteBase</span>.noms.<span class="fn">get</span>(self.numface, <span class="bi">str</span>(self.numface))
+
+    <span class="kw">def</span> <span class="fn">sorte</span>(self):
+        <span class="cm"># retourne la sorte de carte (pique, cœur, carreau ou trèfle)</span>
+        <span class="kw">return</span> <span class="cl">CarteBase</span>.sortes[self.numsorte<span class="op">-</span><span class="nm">1</span>]
+
+    <span class="kw">def</span> <span class="fn">force</span>(self):
+        <span class="cm"># retourner le numéro de la face, sauf pour l'as qui vaut plus que le roi</span>
+        <span class="kw">return</span> self.numface <span class="kw">if</span> self.numface <span class="op">&gt;</span> <span class="nm">1</span> <span class="kw">else</span> <span class="nm">14</span></pre>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Énoncé</div>
+    <div class="enonce">
+      <p>Créez une classe nommée <code>PaquetDeCartes</code> qui encapsule un paquet de <strong>52 cartes</strong> de jeu. Faites <strong>hériter</strong> votre classe de la classe standard <code>list</code> en vous assurant d'utiliser cette liste dont vous <strong>héritez</strong> afin de contenir votre séquence de cartes. <strong>Ne pas</strong> créer d'autres instance de liste.</p>
+      <p>Outre l'interface d'une liste, votre classe doit posséder les méthodes suivantes :</p>
+      <ol>
+        <li><code>__init__(self, Carte, mélanger=False)</code> qui permet de construire un paquet de 52 cartes en instanciant des cartes à partir d'une classe <code>Carte</code> reçue en <strong>argument</strong>. Par exemple, <code>paquet = PaquetDeCartes(CarteBase)</code>, où la classe <code>CarteBase</code> est définie dans le contexte de cet exercice. Par défaut, les cartes doivent être <strong>dans l'ordre</strong> de l'as au roi, d'abord pour les piques, ensuite pour les cœurs, puis les carreaux et finalement les trèfles. L'argument optionnel <code>mélanger</code> (défaut=<code>False</code>) permet de spécifier que les cartes doivent être initialement mélangées.</li>
+        <li><code>mélanger(self)</code> qui permet de mélanger <strong>aléatoirement</strong> les cartes du paquet. Pour ce faire, utilisez la fonction <code>shuffle</code> du module <code>random</code>.</li>
+        <li><code>piger(n)</code> qui permet de retourner dans une liste les <em>n</em> premières cartes du paquet. Notez que les cartes pigées doivent être <strong>retirées</strong> du paquet et que le nombre de cartes retournées ne peut pas dépasser le nombre de cartes actuellement contenues dans le paquet. Si le paquet devient vide, la méthode doit simplement retourner une liste vide.</li>
+      </ol>
+      <div class="note"><strong>Indices :</strong> pour retirer une carte au début du paquet, vous pouvez utiliser <code>list.pop(0)</code>.</div>
+      <p>Notez que le constructeur de votre classe doit accepter n'importe quelle classe de carte pouvant s'instancier à partir d'un <strong>numéro de face</strong> et d'un <strong>numéro de sorte</strong>, comme pour la classe <code>CarteBase</code>, ou toute classe <strong>dérivée</strong> de cette classe.</p>
+      <div class="warn"><strong>Assurez-vous</strong> également de faire usage de la liste dont vous <strong>héritez</strong> ; <strong>ne pas</strong> créer une autre liste pour contenir les cartes de votre paquet.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Solution de référence</div>
+    <div class="solution-box">
+      <div class="code-block">
+        <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; PaquetDeCartes.py</div>
+        <pre><span class="kw">import</span> random
+
+<span class="kw">class</span> <span class="cl">PaquetDeCartes</span>(<span class="bi">list</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, carte, mélanger<span class="op">=</span><span class="kw">False</span>):
+        <span class="cm"># initialiser la liste</span>
+        <span class="bi">super</span>().<span class="fn">__init__</span>()
+
+        <span class="cm"># créer toutes les cartes dans l'ordre</span>
+        <span class="kw">for</span> couleur <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">5</span>):
+            <span class="kw">for</span> face <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">14</span>):
+                self.<span class="fn">append</span>(<span class="fn">carte</span>(face, couleur))
+
+        <span class="kw">if</span> mélanger:
+            <span class="cm"># mélanger le paquet tel que spécifié</span>
+            self.<span class="fn">mélanger</span>()
+
+    <span class="kw">def</span> <span class="fn">mélanger</span>(self):
+        <span class="cm"># mélanger aléatoirement les cartes</span>
+        random.<span class="fn">shuffle</span>(self)
+
+    <span class="kw">def</span> <span class="fn">piger</span>(self, n):
+        <span class="cm"># initialiser la pige</span>
+        pige <span class="op">=</span> []
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(n):
+            <span class="kw">if</span> self:
+                <span class="cm"># ajouter la première carte à la pige</span>
+                pige.<span class="fn">append</span>(self.<span class="fn">pop</span>(<span class="nm">0</span>))
+
+        <span class="cm"># retourner la pige</span>
+        <span class="kw">return</span> pige</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════════
+     EXERCICE 10 — CARTE DE POKER
+════════════════════════════════════════════ -->
+<section class="exercise" id="ex10">
+  <div class="ex-header">
+    <div class="ex-num">10</div>
+    <div>
+      <div class="ex-title">Carte de Poker</div>
+      <div class="ex-subtitle">Héritage — <code>CarteDePoker(CarteBase)</code></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Énoncé</div>
+    <div class="enonce">
+      <p>Soit la classe <code>CarteBase</code> présente dans le contexte de cet exercice (voir Exercice 9). Elle encapsule une carte de jeu caractérisée par des valeurs numériques pour sa <strong>face</strong> et sa <strong>sorte</strong>. Les <strong>faces</strong> possibles sont des entiers de 1 à 13, avec la face 1 correspondant à l'as, et les faces 11, 12 et 13 correspondant respectivement au valet, à la dame et au roi. Les autres faces sont simplement identifiées par leur numéro de 2 à 10. Les <strong>sortes</strong> possibles sont des entiers de 1 à 4 correspondants respectivement aux cartes de pique, cœur, carreau et trèfle. Analysez cette classe afin de bien comprendre son fonctionnement.</p>
+      <p>On vous demande de créer une classe nommée <code>CarteDePoker</code> qui hérite de <code>CarteBase</code> et qui définit ou redéfinit les méthodes suivantes :</p>
+      <ol>
+        <li><code>__eq__(self, autre)</code> qui permet de définir le comportement de l'opérateur <code>==</code>.</li>
+        <li><code>__lt__(self, autre)</code> qui permet de définir le comportement de l'opérateur <code>&lt;</code>.</li>
+        <li><code>__ge__(self, autre)</code> qui permet de définir le comportement de l'opérateur <code>&gt;=</code>.</li>
+      </ol>
+      <p>Notez qu'au Poker, une carte est considérée <strong>inférieure</strong> à une autre carte si la valeur de sa force est <strong>strictement</strong> inférieure, ou si sa force est égale, mais que sa sorte est <strong>numériquement</strong> supérieure (i.e. pique &gt; cœur &gt; carreau &gt; trèfle). Par ailleurs, deux cartes sont <strong>équivalentes</strong> si leur face et leur sorte sont les mêmes.</p>
+      <div class="tip"><strong>Pour implanter votre classe</strong>, assurez-vous d'utiliser les <strong>méthodes</strong> de la classe de base chaque fois que c'est possible (ne pas réinventer la roue), et assurez-vous de ne <strong>pas</strong> modifier cette dernière.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Solution de référence</div>
+    <div class="solution-box">
+      <div class="code-block">
+        <div class="code-header"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>&nbsp; CarteDePoker.py</div>
+        <pre><span class="kw">class</span> <span class="cl">CarteDePoker</span>(<span class="cl">CarteBase</span>):
+    <span class="kw">def</span> <span class="fn">__eq__</span>(self, autre):
+        <span class="kw">return</span> self.<span class="fn">force</span>() <span class="op">==</span> autre.<span class="fn">force</span>() <span class="kw">and</span> self.numsorte <span class="op">==</span> autre.numsorte
+
+    <span class="kw">def</span> <span class="fn">__lt__</span>(self, autre):
+        <span class="kw">return</span> (
+            self.<span class="fn">force</span>() <span class="op">&lt;</span> autre.<span class="fn">force</span>()
+            <span class="kw">or</span> self.<span class="fn">force</span>() <span class="op">==</span> autre.<span class="fn">force</span>() <span class="kw">and</span> self.numsorte <span class="op">&gt;</span> autre.numsorte
+        )
+
+    <span class="kw">def</span> <span class="fn">__ge__</span>(self, autre):
+        <span class="kw">return</span> <span class="kw">not</span> self <span class="op">&lt;</span> autre</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+  // Highlight active nav link on scroll
+  const sections = document.querySelectorAll('section.exercise');
+  const navLinks = document.querySelectorAll('nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const id = entry.target.getAttribute('id');
+        const active = document.querySelector(`nav a[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
